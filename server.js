@@ -31,10 +31,3 @@ app.get('/api/config/paypal', (req, res) =>
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`app working on port ${PORT}`))
-
-// function errorHandler (err, req, res, next) {
-//   const statusCode = res.statusCode === 200 ? 500 : res.statusCode
-//   res.status(statusCode).json({
-//     message: err.message
-//   })
-// }
