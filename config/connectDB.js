@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+// const os = require('os')
 require('colors')
 const uri =
   'mongodb+srv://achyuth:achyuth@demo.xlnni.mongodb.net/geekcart?retryWrites=true&w=majority'
