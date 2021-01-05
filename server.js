@@ -9,6 +9,9 @@ const categoryRoute = require('./categories/categoryRoute')
 const productRoute = require('./products/productRoute')
 const orderRoute = require('./orders/orderRoute')
 const morgan = require('morgan')
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY)
+const { v4: uuidv4 } = require('uuid')
+
 connectDB()
 
 app.use(express.json())
@@ -28,6 +31,45 @@ app.use('/api/orders', orderRoute)
 app.get('/api/config/paypal', (req, res) =>
   res.send(process.env.PAYPAL_CLIENT_ID)
 )
+
+app.get('/api/config/stripe', (req, res) => {
+  console.log('coming in the stripe config file')
+  res.send(process.env.STRIPE_PRIVATE_KEY)
+})
+
+app.post('/api/config/payment', (req, res) => {
+  const { product, token } = req.body
+  console.log('PRODUCT', product)
+  console.log('PRICE', product.price)
+  console.log('TOKEN', token)
+  const idempotencyKey = uuidv4()
+
+  return stripe.customers
+    .create({
+      email: token.email,
+      source: token.id
+    })
+    .then(customer => {
+      stripe.charges.create(
+        {
+          amount: product.price * 100,
+          currency: 'inr',
+          customer: customer.id,
+          receipt_email: token.email,
+          description: `purchase of ${product.name}`,
+          shipping: {
+            name: token.card.name,
+            address: {
+              country: token.card.address_country
+            }
+          }
+        },
+        { idempotencyKey }
+      )
+    })
+    .then(result => res.status(200).json(result))
+    .catch(err => console.log(err))
+})
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () => console.log(`app working on port ${PORT}`))
