@@ -17,7 +17,7 @@ connectDB()
 app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
-
+/
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
@@ -38,9 +38,9 @@ app.get('/api/config/stripe', (req, res) => {
 })
 
 app.post('/api/config/payment', (req, res) => {
-  const { product, token } = req.body
-  console.log('PRODUCT', product)
-  console.log('PRICE', product.price)
+  const { order, token } = req.body
+  console.log('PRODUCT', order)
+  console.log('PRICE', order.totalprice)
   console.log('TOKEN', token)
   const idempotencyKey = uuidv4()
 
@@ -52,15 +52,15 @@ app.post('/api/config/payment', (req, res) => {
     .then(customer => {
       stripe.charges.create(
         {
-          amount: product.price * 100,
+          price: token.price,
           currency: 'inr',
           customer: customer.id,
           receipt_email: token.email,
-          description: `purchase of ${product.name}`,
+          description: `purchase by ${order.user.name}`,
           shipping: {
             name: token.card.name,
             address: {
-              country: token.card.address_country
+              country: order.shippingAddress.postalCode
             }
           }
         },
@@ -68,7 +68,7 @@ app.post('/api/config/payment', (req, res) => {
       )
     })
     .then(result => res.status(200).json(result))
-    .catch(err => console.log(err))
+    .catch(err => console.log('error in the stripe payment', err))
 })
 
 const PORT = process.env.PORT || 5000
