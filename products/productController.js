@@ -129,32 +129,3 @@ exports.getProductById = async (req, res, next, id) => {
     res.status(409).json(productDB)
   }
 }
-
-// FIXME: delete this
-exports.photo = (req, res, next) => {
-  if (req.product.photo.data) {
-    res.set('Content-Type', req.product.photo.contentType)
-    return res.send(req.product.photo.data)
-  }
-  next()
-}
-
-// @desc    Get top rated products
-// @route   GET / api/products/top
-// @access  Public
-// exports.getTopProducts = async (req, res) => {
-//   const allProducts = await product.getAllDocuments()
-//   const topProducts = allProducts
-//     .sort({
-//       rating: -1
-//     })
-//     .limit(3)
-//   if (topProducts) {
-//     res.status(200).json(topProducts)
-//   } else {
-//     res.status(400).json({
-//       error: 'error loading top products'
-//     })
-//   }
-// }
-// "express-async-handler": "^1.1.4",

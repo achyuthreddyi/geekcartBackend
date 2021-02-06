@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    // FIXME:  put this into s3 buckets and get the link Solved
+
     image: {
       type: String,
       required: true
@@ -84,7 +84,8 @@ exports.createDocument = async id => {
       name: 'Sample Product',
       price: 0,
       user: id,
-      image: '/images/sample.jpeg',
+      image:
+        'https://firebasestorage.googleapis.com/v0/b/firegram-e3d23.appspot.com/o/sample.jpg?alt=media&token=e889793e-3385-4f41-acb9-dc17975e0c02',
       brand: 'Sample Brand',
       category: 'Sample Category',
       countInStock: 0,
@@ -234,59 +235,3 @@ exports.getTopDocuments = async _ => {
     .limit(3)
   return topProducts
 }
-
-// module.exports = product
-
-// productSchema.methods = {
-//   createProduct: async function (req) {
-//     try {
-//       const form = new formidable.IncomingForm()
-//       form.keepExtensions = true
-
-//       form.parse(req, async (err, fields, file) => {
-//         if (err) {
-//           console.log('place 101')
-//           return {
-//             error: 'problem with image'
-//           }
-//         }
-//         const { price, name, description, category, stock } = fields
-
-//         if (!price || !name || !description || !category || !stock) {
-//           console.log('place102')
-//           return {
-//             error: 'please include all fields '
-//           }
-//         }
-//         this.name = name
-//         this.price = price
-//         this.description = description
-//         this.category = category
-//         this.stock = stock
-
-//         if (file.photo) {
-//           if (file.photo.size > 3000000) {
-//             return {
-//               error: 'file size is big '
-//             }
-//           } else {
-//             this.photo.data = fs.readFileSync(file.photo.path)
-//             this.photo.contentType = file.photo.type
-//           }
-//         }
-
-//         const uploadedProduct = await this.save()
-//         console.log('uploaded documnet ', uploadedProduct)
-//         return uploadedProduct
-//         // save to the database
-//       })
-
-//       // return await product.create(newproduct)
-//     } catch (err) {
-//       return {
-//         error: 'error creating a new product',
-//         err
-//       }
-//     }
-//   }
-// }
