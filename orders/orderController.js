@@ -12,10 +12,8 @@ const {
 exports.createOrder = async (req, res) => {
   const createdOrder = await createDocument(req)
   if (!createdOrder.error) {
-    console.log('inside the created order success')
     res.status(200).json(createdOrder)
   } else {
-    console.log('inside the error in order creation')
     res.status(400).json(createdOrder)
   }
 }
@@ -25,10 +23,8 @@ exports.createOrder = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   const createdOrder = await getAllDocuments()
   if (!createdOrder.error) {
-    console.log('inside the created order success')
     res.status(200).json(createdOrder)
   } else {
-    console.log('inside the error in order creation')
     res.status(400).json(createdOrder)
   }
 }

@@ -61,7 +61,7 @@ category.getDocumentByName = async name => {
 category.updateDocument = async categoryData => {
   try {
     const { categoryId, newCategory } = categoryData
-    console.log('category Id in updateDocument', categoryId)
+
     const categoryDB = await category.findById(categoryId)
     if (categoryDB) {
       categoryDB.name = newCategory.name || category.name

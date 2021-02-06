@@ -79,11 +79,9 @@ userSchema.methods = {
 const User = mongoose.model('User', userSchema)
 
 exports.getUserById = async id => {
-  console.log('coming in the model ', id)
   try {
     const userDB = await User.findById(id).select('-hashed_password -salt')
 
-    console.log('user from the getuserbyid', userDB)
     return userDB
   } catch (err) {
     return {
@@ -118,14 +116,14 @@ exports.createUser = async newUser => {
 exports.updateUser = async req => {
   try {
     const newdata = req.body
-    console.log('req object in the update user tantanatan', newdata)
+
     const userDB = await User.findById(newdata._id)
 
     // const userDB = await User.updateOne(
     //   { _id: newdata._id },
     //   { name: newdata.name, email: newdata.email, role: newdata.role }
     // )
-    console.log('userId in the update user', userDB)
+
     if (userDB) {
       userDB.name = newdata.name
       userDB.email = newdata.email
@@ -138,7 +136,6 @@ exports.updateUser = async req => {
     }
     // return userDB
   } catch (err) {
-    console.log('error while updating', err)
     return {
       error: 'user not being able to update  from the database',
       err
@@ -195,7 +192,6 @@ exports.checkPassword = async userData => {
 }
 
 exports.removeUser = async email => {
-  console.log('user from the user model checking for the ', email)
   try {
     const userDB = await User.findOne({ email })
     return await userDB.remove()

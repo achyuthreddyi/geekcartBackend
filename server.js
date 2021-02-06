@@ -33,15 +33,12 @@ app.get('/api/config/paypal', (req, res) =>
 )
 
 app.get('/api/config/stripe', (req, res) => {
-  console.log('coming in the stripe config file')
   res.send(process.env.STRIPE_PRIVATE_KEY)
 })
 
 app.post('/api/config/payment', (req, res) => {
   const { order, token } = req.body
-  console.log('PRODUCT', order)
-  console.log('PRICE', order.totalprice)
-  console.log('TOKEN', token)
+
   const idempotencyKey = uuidv4()
 
   return stripe.customers

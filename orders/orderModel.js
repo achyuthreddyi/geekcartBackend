@@ -98,7 +98,6 @@ exports.createDocument = async req => {
     shippingPrice,
     totalPrice
   } = req.body
-  console.log('inside the created document ')
 
   try {
     const newOrder = new Order({
@@ -112,7 +111,7 @@ exports.createDocument = async req => {
       totalPrice
     })
     const createdOrder = await newOrder.save()
-    console.log('order created ', createdOrder)
+
     return createdOrder
   } catch (err) {
     return {

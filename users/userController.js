@@ -95,8 +95,6 @@ exports.updateUser = async (req, res) => {
 exports.updateUserProfile = async (req, res) => {
   const newData = req.body
 
-  console.log('in the update user profile ', newData)
-
   const updatedUser = await updateUserDocument(newData)
   const payload = {
     _id: updatedUser._id
@@ -128,9 +126,8 @@ exports.getUser = async (req, res) => {
 // @access  Private/Admin
 exports.deleteUser = async (req, res) => {
   const id = req.params.userId
-  console.log('user id in the delete method', id)
+
   const userExists = await getUserById(id)
-  console.log('user exists in the delete user', userExists)
 
   if (userExists) {
     const deletedUser = await removeUser(userExists.email)
@@ -150,7 +147,6 @@ exports.deleteUser = async (req, res) => {
 // @route   GET /api/users/
 // @access  Private/Admin
 exports.getAllUsers = async (req, res) => {
-  console.log('getting in the userlist method')
   const userList = await getAllUsers()
   if (!userList.error) {
     res.status(200).json(userList)

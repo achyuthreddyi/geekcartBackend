@@ -50,8 +50,6 @@ exports.getAllProducts = async (req, res) => {
 // @access  Public
 
 exports.getProduct = async (req, res) => {
-  // req.product.photo = undefined
-  console.log('inside the getProduct')
   return res.status(200).json(req.product)
 }
 
@@ -60,7 +58,6 @@ exports.getProduct = async (req, res) => {
 // @access  Private/Admin
 
 exports.updateProduct = async (req, res) => {
-  console.log('coming in update product method')
   const updatedProduct = await updateDocument({
     productId: req.product._id,
     newProductDetails: req.body
@@ -92,8 +89,6 @@ exports.deleteProduct = async (req, res) => {
 // @access  Private
 
 exports.createProductReview = async (req, res) => {
-  console.log('hey')
-  console.log('is it coming in the review')
   const reviewedProduct = await addReviewDocument(req)
   if (!reviewedProduct.error) {
     res.status(201).json(reviewedProduct)
@@ -119,27 +114,23 @@ exports.getTopProducts = async (req, res) => {
 // middleware
 
 exports.getProductById = async (req, res, next, id) => {
-  console.log('inside the getProductById', req.originalUrl)
   const productDB = await getDocumentById(id)
-  console.log('getting the product inside the getProduct by id')
+
   if (!productDB) {
     return res.status(404).json({
       error: 'product not found in the database'
     })
   }
   if (!productDB.error) {
-    console.log(
-      'getting the product inside the getProduct by id inside if condition'
-    )
-
     req.product = productDB
-    console.log('req.product inside the getproduct by id', req.product)
+
     next()
   } else {
     res.status(409).json(productDB)
   }
 }
 
+// FIXME: delete this
 exports.photo = (req, res, next) => {
   if (req.product.photo.data) {
     res.set('Content-Type', req.product.photo.contentType)

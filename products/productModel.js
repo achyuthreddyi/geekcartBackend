@@ -193,16 +193,14 @@ exports.deleteDocument = async id => {
 
 exports.addReviewDocument = async req => {
   try {
-    console.log('coming in the addreviewproduct', req.product)
     const { rating, comment } = req.body
     const productDB = req.product
-    console.log('product to review ', productDB)
+
     if (productDB) {
       const alreadyReviewed = productDB.reviews.find(
         item => item.user.toString() === req.user._id.toString()
       )
       if (alreadyReviewed) {
-        console.log('product already reviewwed')
         return {
           error: 'You have already reviewed this product'
         }
@@ -224,7 +222,6 @@ exports.addReviewDocument = async req => {
       return reviewedProduct
     }
   } catch (err) {
-    console.log(err)
     return {
       error: 'error adding a new review',
       err
